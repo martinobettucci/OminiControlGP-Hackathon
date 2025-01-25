@@ -7,3 +7,4 @@ sentencepiece
 gradio
 jupyter
 torchao
+mmgp==3.1.3

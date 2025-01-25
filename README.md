@@ -25,13 +25,24 @@
 
 ## Features
 
+
 OminiControl is a minimal yet powerful universal control framework for Diffusion Transformer models like [FLUX](https://github.com/black-forest-labs/flux).
 
 * **Universal Control 🌐**:  A unified control framework that supports both subject-driven control and spatial control (such as edge-guided and in-painting generation).
 
 * **Minimal Design 🚀**: Injects control signals while preserving original model structure. Only introduces 0.1% additional parameters to the base model.
 
+## OminiControlGP (OminiControl for the GPU Poor) by DeepBeepMeep
+
+With just one line adding the 'mmgp' module, OminiControl can generate images from a derived Flux model in less than 6s with 16 GB of VRAM (profile 1, default), in 9s with 8 GB VRAM (profile 4) or in 16s with less than 6 GB of VRAM (profile 5) 
+
+To run the Gradio with a specific profile:
+```bash
+python gradio_app --profile 1
+```
+
 ## News
+- **2025-01-25**: ⭐️ DeepBeepMeep fork: added support for mmgp 
 - **2024-12-26**: ⭐️ Training code are released. Now you can create your own OminiControl model by customizing any control tasks (3D, multi-view, pose-guided, try-on, etc.) with the FLUX model. Check the [training folder](./train) for more details.
 
 ## Quick Start
@@ -50,11 +61,7 @@ pip install -r requirements.txt
 2. In-painting: `examples/inpainting.ipynb`
 3. Canny edge to image, depth to image, colorization, deblurring: `examples/spatial.ipynb`
 
-### Gradio app
-To run the Gradio app for subject-driven generation:
-```bash
-python -m src.gradio.gradio_app
-```
+
 
 ### Guidelines for subject-driven generation
 1. Input images are automatically center-cropped and resized to 512x512 resolution.
@@ -65,7 +72,7 @@ python -m src.gradio.gradio_app
 
 ## Generated samples
 ### Subject-driven generation
-<a href="https://huggingface.co/spaces/Yuanshi/OminiControl"><img src="https://img.shields.io/badge/🤗_HuggingFace-Space-ffbd45.svg" alt="HuggingFace"></a>
+<a href="https://huggingface.co/spaces/Yuanshi/OminiControl"  ><img src="https://img.shields.io/badge/🤗_HuggingFace-Space-ffbd45.svg" alt="HuggingFace"></a>
 
 **Demos** (Left: condition image; Right: generated image)
 
