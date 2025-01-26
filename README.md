@@ -34,15 +34,15 @@ OminiControl is a minimal yet powerful universal control framework for Diffusion
 
 ## OminiControlGP (OminiControl for the GPU Poor) by DeepBeepMeep
 
-With just one line adding the 'mmgp' module (https://github.com/deepbeepmeep/mmgp\), OminiControl can generate images from a derived Flux model in less than 6s with 16 GB of VRAM (profile 1, default), in 9s with 8 GB VRAM (profile 4) or in 16s with less than 6 GB of VRAM (profile 5) 
+With just one line adding the 'mmgp' module (https://github.com/deepbeepmeep/mmgp\), OminiControl can generate images from a derived Flux model in less than 6s with 16 GB of VRAM (profile 1), in 9s with 8 GB VRAM (profile 4) or in 16s with less than 6 GB of VRAM (profile 5) 
 
-To run the Gradio app with a profile 1 (the fastest but requires the most VRAM):
+To run the Gradio app with a profile 3 (default profile, the fastest but requires the most VRAM):
 ```bash
-python gradio_app --profile 1
+python gradio_app --profile 3
 ```
 To run the Gradio app with a profile 5 (a bit slower but requires only 6  GB of VRAM):
 ```bash
-python gradio_app --profile 1
+python gradio_app --profile 5
 ```
 
 You may check the mmgp git homepage if you want to design your own profiles (for instance to disable quantization).
