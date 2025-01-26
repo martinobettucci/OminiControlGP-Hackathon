@@ -34,12 +34,31 @@ OminiControl is a minimal yet powerful universal control framework for Diffusion
 
 ## OminiControlGP (OminiControl for the GPU Poor) by DeepBeepMeep
 
-With just one line adding the 'mmgp' module, OminiControl can generate images from a derived Flux model in less than 6s with 16 GB of VRAM (profile 1, default), in 9s with 8 GB VRAM (profile 4) or in 16s with less than 6 GB of VRAM (profile 5) 
+With just one line adding the 'mmgp' module (https://github.com/deepbeepmeep/mmgp\), OminiControl can generate images from a derived Flux model in less than 6s with 16 GB of VRAM (profile 1, default), in 9s with 8 GB VRAM (profile 4) or in 16s with less than 6 GB of VRAM (profile 5) 
 
-To run the Gradio with a specific profile:
+To run the Gradio app with a profile 1 (the fastest but requires the most VRAM):
 ```bash
 python gradio_app --profile 1
 ```
+To run the Gradio app with a profile 5 (a bit slower but requires only 6  GB of VRAM):
+```bash
+python gradio_app --profile 1
+```
+
+You may check the mmgp git homepage if you want to design your own profiles (for instance to disable quantization).
+
+If you enjoy this applcitation, you will certainly appreciate  these ones:\
+- Hunyuan3D-2GP: https://github.com/deepbeepmeep/Hunyuan3D-2GP\
+A great image to 3D or text to 3D tool by the Tencent team. Thanks to mmgp it can run with less than 6 GB of VRAM
+
+- HuanyuanVideoGP: https://github.com/deepbeepmeep/HunyuanVideoGP\
+One of the best open source Text to Video generator
+
+- FluxFillGP: https://github.com/deepbeepmeep/FluxFillGP\
+One of the best inpainting / outpainting tools based on Flux that can run with less than 12 GB of VRAM.
+
+- Cosmos1GP: https://github.com/deepbeepmeep/Cosmos1GP\
+This application include two models: a text to world generator and a image / video to world (probably the best open source image to video generator).
 
 ## News
 - **2025-01-25**: ⭐️ DeepBeepMeep fork: added support for mmgp 
