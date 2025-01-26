@@ -115,7 +115,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--profile', type=str, default="1")
+    parser.add_argument('--profile', type=str, default="3")
     parser.add_argument('--verbose', type=str, default="1")
 
     args = parser.parse_args()
