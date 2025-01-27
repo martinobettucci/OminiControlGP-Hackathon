@@ -39,9 +39,10 @@ def init_pipeline():
     pipe.load_lora_weights(
         "Yuanshi/OminiControl",
         weight_name="omini/subject_512.safetensors",
-        adapter_name="subject",
+        adapter_name="subject", 
     )
-    offload.profile(pipe, profile_no=int(args.profile), verboseLevel=int(args.verbose))
+    offload.profile(pipe, profile_no=int(args.profile), verboseLevel=int(args.verbose), quantizeTransformer= False
+                    )
 
 def process_image_and_text(image, text):
     # center crop image
