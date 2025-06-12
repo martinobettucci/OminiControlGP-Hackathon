@@ -31,7 +31,7 @@ train:
     drop_image_prob: 0.1
 
   wandb:
-    project: "OminiControl"
+    project: "Hackathon_Image_Generator"
 
   lora_config:
     r: 4

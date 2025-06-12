@@ -104,7 +104,7 @@ demo = gr.Interface(
         gr.Textbox(lines=2),
     ],
     outputs=gr.Image(type="pil"),
-    title="OminiControl / Subject driven generation",
+    title="Hackathon Image Generator",
     examples=get_samples(),
 )
 
