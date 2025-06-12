@@ -108,6 +108,7 @@ demo = gr.Interface(
     ],
     outputs=gr.Image(type="pil"),
     title="Hackathon Image Generator",
+    description="Hackathon Image Generator",
     examples=get_samples(),
 )
 
