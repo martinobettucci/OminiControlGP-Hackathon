@@ -8,6 +8,7 @@ import numpy as np
 
 from src.flux.condition import Condition
 from src.flux.generate import seed_everything, generate
+from src.nsfw import zero_if_nsfw
 
 
 pipe = None
@@ -76,6 +77,7 @@ def process_image_and_text(image, text):
         height=512,
         width=512,
     ).images[0]
+    result_img = zero_if_nsfw(result_img)
 
     return result_img
 
