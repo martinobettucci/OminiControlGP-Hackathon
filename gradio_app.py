@@ -18,28 +18,31 @@ def get_gpu_memory():
     return torch.cuda.get_device_properties(0).total_memory / 1024**3
 
 
-def init_pipeline():
+def init_pipeline(token=None):
     global pipe
     if False and (use_int8 or get_gpu_memory() < 33):
         transformer_model = FluxTransformer2DModel.from_pretrained(
             "sayakpaul/flux.1-schell-int8wo-improved",
             torch_dtype=torch.bfloat16,
             use_safetensors=False,
+            token=token,
         )
         pipe = FluxPipeline.from_pretrained(
             "black-forest-labs/FLUX.1-schnell",
             transformer=transformer_model,
             torch_dtype=torch.bfloat16,
+            token=token,
         )
     else:
         pipe = FluxPipeline.from_pretrained(
-            "black-forest-labs/FLUX.1-schnell", torch_dtype=torch.bfloat16
+            "black-forest-labs/FLUX.1-schnell", torch_dtype=torch.bfloat16, token=token
         )
     pipe = pipe.to("cpu")
     pipe.load_lora_weights(
         "Yuanshi/OminiControl",
         weight_name="omini/subject_512.safetensors",
-        adapter_name="subject", 
+        adapter_name="subject",
+        token=token,
     )
     offload.profile(pipe, profile_no=int(args.profile), verboseLevel=int(args.verbose), quantizeTransformer= False
                     )
@@ -60,7 +63,7 @@ def process_image_and_text(image, text):
     condition = Condition("subject", image, position_delta=(0, 32))
 
     if pipe is None:
-        init_pipeline()
+        init_pipeline(token=args.token)
 
     result_img = generate(
         pipe,
@@ -118,10 +121,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--profile', type=str, default="3")
     parser.add_argument('--verbose', type=str, default="1")
+    parser.add_argument('--token', type=str, default=None, help="HuggingFace access token")
+    parser.add_argument('--server-name', type=str, default="0.0.0.0", dest="server_name", help="Server name for gradio")
+    parser.add_argument('--server-port', type=int, default=7860, dest="server_port", help="Server port for gradio")
 
     args = parser.parse_args()
 
-    init_pipeline()
+    init_pipeline(token=args.token)
     demo.launch(
         debug=True,
+        server_name=args.server_name,
+        server_port=args.server_port,
     )

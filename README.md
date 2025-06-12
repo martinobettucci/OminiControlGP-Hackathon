@@ -45,6 +45,11 @@ To run the Gradio app with a profile 5 (a bit slower but requires only 6  GB of 
 python gradio_app --profile 5
 ```
 
+Additional useful flags:
+```bash
+python gradio_app --token YOUR_HF_TOKEN --server-name 0.0.0.0 --server-port 7860
+```
+
 You may check the mmgp git homepage if you want to design your own profiles (for instance to disable quantization).
 
 If you enjoy this applcitation, you will certainly appreciate  these ones:\
