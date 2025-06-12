@@ -1,4 +1,4 @@
-# OminiControl Training 🛠️
+# Hackathon Image Generator Training 🛠️
 
 ## Preparation
 

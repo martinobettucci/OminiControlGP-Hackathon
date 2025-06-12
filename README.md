@@ -1,4 +1,4 @@
-# OminiControl
+# Hackathon Image Generator
 
 
 <img src='./assets/demo/demo_this_is_omini_control.jpg' width='100%' />
@@ -32,7 +32,7 @@ OminiControl is a minimal yet powerful universal control framework for Diffusion
 
 * **Minimal Design 🚀**: Injects control signals while preserving original model structure. Only introduces 0.1% additional parameters to the base model.
 
-## OminiControlGP (OminiControl for the GPU Poor) by DeepBeepMeep
+## Hackathon Image Generator by DeepBeepMeep
 
 With just one line adding the 'mmgp' module (https://github.com/deepbeepmeep/mmgp\), OminiControl can generate images from a derived Flux model in less than 6s with 16 GB of VRAM (profile 1), in 9s with 8 GB VRAM (profile 4) or in 16s with less than 6 GB of VRAM (profile 5) 
 
