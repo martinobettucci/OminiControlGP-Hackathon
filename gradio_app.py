@@ -5,6 +5,8 @@ from PIL import Image, ImageDraw, ImageFont
 from diffusers.pipelines import FluxPipeline
 from diffusers import FluxTransformer2DModel
 import numpy as np
+import json
+import os
 
 from src.flux.condition import Condition
 from src.flux.generate import seed_everything, generate
@@ -13,6 +15,42 @@ from src.nsfw import zero_if_nsfw
 
 pipe = None
 use_int8 = False
+quantize_transformer = False
+CONFIG_FILE = "advanced_config.json"
+
+
+def load_config():
+    config = {
+        "num_steps": 8,
+        "use_int8": False,
+        "quantize_transformer": False,
+    }
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r") as f:
+                data = json.load(f)
+            config.update(data)
+        except Exception:
+            pass
+    return config
+
+
+def save_config(num_steps, use_int8_val, quant_val):
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(
+            {
+                "num_steps": int(num_steps),
+                "use_int8": bool(use_int8_val),
+                "quantize_transformer": bool(quant_val),
+            },
+            f,
+        )
+
+
+config = load_config()
+use_int8 = config["use_int8"]
+quantize_transformer = config["quantize_transformer"]
+num_steps_default = config["num_steps"]
 
 
 def get_gpu_memory():
@@ -45,10 +83,18 @@ def init_pipeline(token=None):
         adapter_name="subject",
         token=token,
     )
-    offload.profile(pipe, profile_no=int(args.profile), verboseLevel=int(args.verbose), quantizeTransformer= False
-                    )
+    offload.profile(
+        pipe,
+        profile_no=int(args.profile),
+        verboseLevel=int(args.verbose),
+        quantizeTransformer=quantize_transformer,
+    )
 
-def process_image_and_text(image, text):
+def process_image_and_text(image, text, num_steps, use_int8_val, quant_val):
+    global use_int8, quantize_transformer
+    use_int8 = bool(use_int8_val)
+    quantize_transformer = bool(quant_val)
+    save_config(num_steps, use_int8, quantize_transformer)
     conditions = None
     if image is not None:
         # center crop image
@@ -73,7 +119,7 @@ def process_image_and_text(image, text):
         pipe,
         prompt=text.strip(),
         conditions=conditions,
-        num_inference_steps=8,
+        num_inference_steps=int(num_steps),
         height=512,
         width=512,
     ).images[0]
@@ -108,17 +154,44 @@ def get_samples():
     return [[Image.open(sample["image"]), sample["text"]] for sample in sample_list]
 
 
-demo = gr.Interface(
-    fn=process_image_and_text,
-    inputs=[
-        gr.Image(type="pil"),
-        gr.Textbox(lines=2),
-    ],
-    outputs=gr.Image(type="pil"),
-    title="Hackathon Image Generator",
-    description="Hackathon Image Generator",
-    examples=get_samples(),
-)
+with gr.Blocks() as demo:
+    gr.Markdown("## Hackathon Image Generator")
+    with gr.Row():
+        with gr.Column():
+            input_image = gr.Image(type="pil")
+            input_text = gr.Textbox(lines=2)
+            advanced_toggle = gr.Checkbox(label="Advanced", value=False)
+            with gr.Column(visible=False) as advanced_opts:
+                steps_slider = gr.Slider(
+                    1,
+                    50,
+                    value=num_steps_default,
+                    step=1,
+                    label="Number of Sampling Steps",
+                )
+                int8_checkbox = gr.Checkbox(label="Use INT8", value=use_int8)
+                quant_checkbox = gr.Checkbox(
+                    label="Quantize Transformer", value=quantize_transformer
+                )
+        with gr.Column():
+            output_image = gr.Image(type="pil")
+
+    run_button = gr.Button("Generate")
+    advanced_toggle.change(
+        lambda v: gr.update(visible=v), advanced_toggle, advanced_opts
+    )
+    run_button.click(
+        process_image_and_text,
+        inputs=[
+            input_image,
+            input_text,
+            steps_slider,
+            int8_checkbox,
+            quant_checkbox,
+        ],
+        outputs=output_image,
+    )
+    gr.Examples(get_samples(), inputs=[input_image, input_text])
 
 if __name__ == "__main__":
     import argparse
