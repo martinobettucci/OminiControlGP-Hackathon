@@ -84,6 +84,7 @@ pip install -r requirements.txt
 1. Subject-driven generation: `examples/subject.ipynb`
 2. In-painting: `examples/inpainting.ipynb`
 3. Canny edge to image, depth to image, colorization, deblurring: `examples/spatial.ipynb`
+4. **Text-to-image**: leave the input image empty in the Gradio app
 
 
 

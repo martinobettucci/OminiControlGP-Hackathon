@@ -48,19 +48,22 @@ def init_pipeline(token=None):
                     )
 
 def process_image_and_text(image, text):
-    # center crop image
-    w, h, min_size = image.size[0], image.size[1], min(image.size)
-    image = image.crop(
-        (
-            (w - min_size) // 2,
-            (h - min_size) // 2,
-            (w + min_size) // 2,
-            (h + min_size) // 2,
+    conditions = None
+    if image is not None:
+        # center crop image
+        w, h, min_size = image.size[0], image.size[1], min(image.size)
+        image = image.crop(
+            (
+                (w - min_size) // 2,
+                (h - min_size) // 2,
+                (w + min_size) // 2,
+                (h + min_size) // 2,
+            )
         )
-    )
-    image = image.resize((512, 512))
+        image = image.resize((512, 512))
 
-    condition = Condition("subject", image, position_delta=(0, 32))
+        condition = Condition("subject", image, position_delta=(0, 32))
+        conditions = [condition]
 
     if pipe is None:
         init_pipeline(token=args.token)
@@ -68,7 +71,7 @@ def process_image_and_text(image, text):
     result_img = generate(
         pipe,
         prompt=text.strip(),
-        conditions=[condition],
+        conditions=conditions,
         num_inference_steps=8,
         height=512,
         width=512,
