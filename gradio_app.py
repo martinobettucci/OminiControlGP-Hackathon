@@ -202,6 +202,7 @@ if __name__ == "__main__":
     parser.add_argument('--token', type=str, default=None, help="HuggingFace access token")
     parser.add_argument('--server-name', type=str, default="0.0.0.0", dest="server_name", help="Server name for gradio")
     parser.add_argument('--server-port', type=int, default=7860, dest="server_port", help="Server port for gradio")
+    parser.add_argument('--root_path', type=str, default="", dest="root_path", help="Context path for gradio")
 
     args = parser.parse_args()
 
@@ -210,4 +211,5 @@ if __name__ == "__main__":
         debug=True,
         server_name=args.server_name,
         server_port=args.server_port,
+        root_path=args.root_path,
     )

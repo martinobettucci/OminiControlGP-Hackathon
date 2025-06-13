@@ -47,8 +47,10 @@ python gradio_app --profile 5
 
 Additional useful flags:
 ```bash
-python gradio_app --token YOUR_HF_TOKEN --server-name 0.0.0.0 --server-port 7860
+python gradio_app --token YOUR_HF_TOKEN --server-name 0.0.0.0 --server-port 7860 --root_path /music
 ```
+`--root_path` allows the app to run under a specific context path, useful when
+serving behind a proxy.
 
 You may check the mmgp git homepage if you want to design your own profiles (for instance to disable quantization).
 
